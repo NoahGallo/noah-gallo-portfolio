@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
