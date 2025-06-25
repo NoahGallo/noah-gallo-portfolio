@@ -1,8 +1,6 @@
-import { useTheme } from '../context/ThemeContext'
 import { Github, Linkedin, Mail, Download } from 'lucide-react'
 
 export function HeroSection() {
-  const { theme } = useTheme()
 
   return (
     <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">

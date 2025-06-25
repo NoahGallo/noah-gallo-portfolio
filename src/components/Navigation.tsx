@@ -1,8 +1,6 @@
 import { useState } from 'react'
 
 export function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
