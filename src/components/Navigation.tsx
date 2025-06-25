@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 export function Navigation() {
   const navItems = [
     { name: 'Home', href: '#home' },
