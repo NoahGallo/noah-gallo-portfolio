@@ -117,17 +117,17 @@ export function ProjectsSection() {
   }
 
   const nextImage = () => {
-    if (expandedProject !== null) {
+    if (expandedProject !== null && projects[expandedProject]?.images) {
       setCurrentImage((prev) => 
-        prev < projects[expandedProject].images.length - 1 ? prev + 1 : 0
+        prev < projects[expandedProject]!.images.length - 1 ? prev + 1 : 0
       )
     }
   }
 
   const prevImage = () => {
-    if (expandedProject !== null) {
+    if (expandedProject !== null && projects[expandedProject]?.images) {
       setCurrentImage((prev) => 
-        prev > 0 ? prev - 1 : projects[expandedProject].images.length - 1
+        prev > 0 ? prev - 1 : projects[expandedProject]!.images.length - 1
       )
     }
   }
@@ -219,7 +219,7 @@ export function ProjectsSection() {
         </div>
 
         {/* Expanded Project Modal */}
-        {expandedProject !== null && (
+        {expandedProject !== null && projects[expandedProject] && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
                onClick={() => setExpandedProject(null)}>
             <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
@@ -274,7 +274,7 @@ export function ProjectsSection() {
                         >
                           <img 
                             src={image} 
-                            alt={`${projects[expandedProject].title} ${idx + 1}`} 
+                            alt={`${projects[expandedProject]!.title} ${idx + 1}`} 
                             className="w-full h-48 object-cover rounded-lg group-hover:opacity-90 transition-opacity"
                             loading="lazy"
                           />
@@ -309,13 +309,13 @@ export function ProjectsSection() {
         )}
 
         {/* Improved Image Lightbox with Better Arrow Visibility */}
-        {isViewerOpen && expandedProject !== null && (
+        {isViewerOpen && expandedProject !== null && projects[expandedProject]?.images && (
           <div className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4"
                onClick={closeImageViewer}>
             <div className="relative max-w-6xl max-h-full">
               <img 
-                src={projects[expandedProject].images[currentImage]} 
-                alt={`${projects[expandedProject].title} ${currentImage + 1}`}
+                src={projects[expandedProject]!.images[currentImage]} 
+                alt={`${projects[expandedProject]!.title} ${currentImage + 1}`}
                 className="max-w-full max-h-full object-contain"
                 onClick={(e) => e.stopPropagation()}
               />
@@ -344,7 +344,7 @@ export function ProjectsSection() {
               
               {/* Improved Image counter */}
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm border border-white/20 shadow-lg">
-                {currentImage + 1} / {projects[expandedProject].images.length}
+                {currentImage + 1} / {projects[expandedProject]!.images.length}
               </div>
             </div>
           </div>
