@@ -4,13 +4,16 @@ export function ExperienceSection() {
   const experiences = [
     {
       company: "Devoteam Luxembourg",
-      position: "Cloud & DevOps Apprenticeship",
+      position: "DevOps / Cloud Engineer",
       location: "Windhof, Luxembourg",
       period: "September 2024 - Present",
       description: [
+        "Completed an alternance (3 weeks work, 1 week university per month) from September 2024 to June 2025.",
+        "Started full-time as DevOps / Cloud Engineer from July 1st, 2025.",
         "Implemented a modular hub-and-spoke cloud infrastructure using Terraform, Azure, and Azure DevOps, including reusable templates to support client projects and streamline deployments across regions.",
         "Integrated Azure Kubernetes Service (AKS) for scalable and redundant application hosting as part of the solution.",
-        "Co-led a 3-day DevOps workshop, mentoring BTS Cloud Computing students on deploying infrastructures with Terraform, Ansible, Jenkins, and Kubernetes, while showcasing monitoring tools like Prometheus and Grafana."
+        "Co-led a 3-day DevOps workshop, mentoring BTS Cloud Computing students on deploying infrastructures with Terraform, Ansible, Jenkins, and Kubernetes, while showcasing monitoring tools like Prometheus and Grafana.",
+        "Lead two 3 hour devops presentations at CESI in Nancy for 5th year Master students, covering DevOps principles, tools, and best practices.",
       ],
       current: true
     },
@@ -20,8 +23,9 @@ export function ExperienceSection() {
       location: "Mamer, Luxembourg",
       period: "January 2024 – June 2024",
       description: [
-        "Automated installations of RedHat OpenShift on on-premises and cloud platforms using Terraform.",
-        "Designed and implemented Infrastructure as Code solutions to streamline OpenShift cluster deployments across hybrid environments."
+        "Automated infrastructure deployments using Terraform to deploy Azure resources, including virtual machines, networks, and storage accounts.",
+        "Designed and implemented Infrastructure as Code solutions to streamline OpenShift cluster deployments across hybrid environments.",
+        "Passed Microsoft Azure Certifications as the AZ-104 (Azure Administrator Associate) and AZ-305 (Azure Solutions Architect Expert).",
       ],
       current: false
     },
@@ -32,7 +36,8 @@ export function ExperienceSection() {
       period: "March 2023 - June 2023",
       description: [
         "Created VM templates in vCenter using HashiCorp Packer and deployed them with Terraform.",
-        "Automated post-deployment configurations with Ansible, streamlining infrastructure provisioning."
+        "Automated post-deployment configurations with Ansible, streamlining infrastructure provisioning.",
+        "Passed the AZ-900 (Microsoft Azure Fundamentals) certification.",
       ],
       current: false
     }
