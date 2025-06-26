@@ -1,6 +1,23 @@
 import { Github, Linkedin, Mail, Download } from 'lucide-react'
 
 export function HeroSection() {
+  
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById('projects')
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const downloadCV = () => {
+    // Create a temporary link to download the PDF
+    const link = document.createElement('a')
+    link.href = '/resume/noah-gallo-cv.pdf'
+    link.download = 'Noah_Gallo_CV.pdf'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
     <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">
@@ -47,11 +64,17 @@ export function HeroSection() {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
+        <button 
+          onClick={downloadCV}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 hover:scale-105 transform"
+        >
           <Download size={20} />
           Download CV
         </button>
-        <button className="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-3 rounded-lg font-medium transition-colors">
+        <button 
+          onClick={scrollToProjects}
+          className="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-3 rounded-lg font-medium transition-colors hover:scale-105 transform"
+        >
           View Projects
         </button>
       </div>
