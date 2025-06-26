@@ -116,21 +116,28 @@ export function ProjectsSection() {
     setIsViewerOpen(false)
   }
 
-  const nextImage = () => {
-    if (expandedProject !== null && projects[expandedProject]?.images) {
-      setCurrentImage((prev) => 
-        prev < projects[expandedProject]!.images.length - 1 ? prev + 1 : 0
-      )
+    const nextImage = () => {
+      if (expandedProject !== null) {
+        const project = projects[expandedProject]
+        if (project && project.images) {
+          setCurrentImage((prev) => 
+            prev < project.images.length - 1 ? prev + 1 : 0
+          )
+        }
+      }
     }
-  }
 
-  const prevImage = () => {
-    if (expandedProject !== null && projects[expandedProject]?.images) {
-      setCurrentImage((prev) => 
-        prev > 0 ? prev - 1 : projects[expandedProject]!.images.length - 1
-      )
+    const prevImage = () => {
+      if (expandedProject !== null) {
+        const project = projects[expandedProject]
+        if (project && project.images) {
+          setCurrentImage((prev) => 
+            prev > 0 ? prev - 1 : project.images.length - 1
+          )
+        }
+      }
     }
-  }
+
 
   return (
     <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800">
