@@ -1,6 +1,10 @@
 import { Calendar, MapPin, Building } from 'lucide-react'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
 export function ExperienceSection() {
+  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver()
+  const { ref: experienceRef, hasIntersected: experienceVisible } = useIntersectionObserver()
+
   const experiences = [
     {
       company: "Devoteam Luxembourg",
@@ -46,7 +50,12 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-600 ${
+            titleVisible ? 'animate-fadeInUp' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Professional Experience
           </h2>
@@ -55,9 +64,18 @@ export function ExperienceSection() {
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div 
+          ref={experienceRef}
+          className="space-y-8"
+        >
           {experiences.map((exp, index) => (
-            <div key={index} className="relative">
+            <div 
+              key={index} 
+              className={`relative transition-all duration-600 ${
+                experienceVisible ? 'animate-slideInLeft' : 'opacity-0 -translate-x-8'
+              }`}
+              style={{ animationDelay: `${200 + index * 200}ms` }}
+            >
               {/* Timeline line */}
               {index !== experiences.length - 1 && (
                 <div className="absolute left-8 top-20 w-0.5 h-full bg-gray-200 dark:bg-gray-700"></div>
@@ -65,19 +83,21 @@ export function ExperienceSection() {
               
               <div className="flex gap-8">
                 {/* Timeline dot */}
-                <div className={`flex-shrink-0 w-16 h-16 rounded-full border-4 flex items-center justify-center ${
+                <div className={`flex-shrink-0 w-16 h-16 rounded-full border-4 flex items-center justify-center transition-all duration-300 hover:scale-110 ${
                   exp.current 
-                    ? 'bg-blue-600 border-blue-600' 
-                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                    ? 'bg-blue-600 border-blue-600 animate-pulse-slow' 
+                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
                 }`}>
-                  <Building size={20} className={exp.current ? 'text-white' : 'text-gray-600 dark:text-gray-300'} />
+                  <Building size={20} className={`transition-colors duration-300 ${
+                    exp.current ? 'text-white' : 'text-gray-600 dark:text-gray-300'
+                  }`} />
                 </div>
 
                 {/* Content */}
-                <div className="flex-grow bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <div className="flex-grow bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
                   <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {exp.position}
                       </h3>
                       <p className="text-blue-600 dark:text-blue-400 font-medium">
@@ -85,7 +105,7 @@ export function ExperienceSection() {
                       </p>
                     </div>
                     {exp.current && (
-                      <span className="inline-block bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium mt-2 md:mt-0">
+                      <span className="inline-block bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium mt-2 md:mt-0 animate-pulse">
                         Current
                       </span>
                     )}
@@ -104,7 +124,10 @@ export function ExperienceSection() {
 
                   <ul className="space-y-2">
                     {exp.description.map((item, idx) => (
-                      <li key={idx} className="text-gray-700 dark:text-gray-300 text-sm">
+                      <li 
+                        key={idx} 
+                        className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+                      >
                         • {item}
                       </li>
                     ))}
