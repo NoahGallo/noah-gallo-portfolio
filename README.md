@@ -1,69 +1,48 @@
-# React + TypeScript + Vite
+# Noah Gallo Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal portfolio website showcasing my skills, projects, and professional experience as a Cloud & DevOps Engineer.
 
-Currently, two official plugins are available:
+🌐 **Live Website:** https://noah-gallo.com/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## About This Portfolio
 
-## Expanding the ESLint configuration
+This website represents my journey as a Cloud & DevOps Engineer, featuring my professional experience, technical projects, and certifications. Built with modern web technologies and cloud infrastructure to demonstrate real-world skills.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## What You'll Find
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Professional Experience**
+- Current role as DevOps/Cloud Engineer at Devoteam Luxembourg
+- Previous internships at Fujitsu and NTT Luxembourg
+- Workshop leadership and mentoring experience
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+**Featured Projects**
+- Trippify: Travel planning platform with microservices architecture on Google Cloud
+- Event-driven e-commerce platform using Apache Kafka and Quarkus
+- This portfolio website with serverless Azure backend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Technical Skills**
+- Cloud Platforms: Azure, AWS, Google Cloud Platform
+- DevOps Tools: Terraform, Ansible, Docker, Kubernetes
+- Programming: Python, Java, TypeScript, React
+- Monitoring: Prometheus, Grafana, Azure DevOps
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Certifications**
+- Microsoft Azure Expert (AZ-305)
+- Microsoft Azure Fundamentals (AZ-900)
+- Red Hat Certified System Administrator (RHCSA)
+- Cisco CCNA
+- TOEIC English Proficiency
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Technical Implementation
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Built with modern technologies including React, TypeScript, Azure Functions, and Cosmos DB. Features real-time visitor analytics, responsive design with dark/light mode, and serverless architecture for optimal performance and scalability.
+
+## Connect With Me
+
+- **LinkedIn:** linkedin.com/in/noahgallo
+- **Email:** gallo.noah@gmail.com
+- **GitHub:** github.com/NoahGallo
+
+---
+
+Thank you for visiting my portfolio! Feel free to explore and connect with me for opportunities or collaboration.
