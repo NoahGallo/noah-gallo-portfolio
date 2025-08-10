@@ -93,15 +93,39 @@ export function CertificationsSection() {
         "https://www.credly.com/badges/868b69ef-f08b-47e0-b9fa-a5f5376f9bc8/linked_in_profile",
       verified: true,
     },
-  ];
-
-  const upcomingCerts = [
     {
       title: "CKA",
       subtitle: "Certified Kubernetes Administrator",
       provider: "CNCF",
-      status: "In Progress",
-      logo: "⎈",
+      level: "Professional",
+      image: "/images/certifications/cka.png",
+      verifyUrl:
+        "https://www.credly.com/badges/e104264a-7b4f-445f-a503-54b80aa342b0/linked_in_profile",
+      verified: true,
+    },
+  ];
+
+  const upcomingCerts = [
+    {
+      title: "AWS SAA-C03",
+      subtitle: "AWS Solutions Architect Associate",
+      provider: "Amazon Web Services",
+      status: "Planned",
+      logo: "☁️",
+    },
+    {
+      title: "EX280",
+      subtitle: "Red Hat OpenShift Administrator",
+      provider: "Red Hat",
+      status: "Planned",
+      logo: "🐧",
+    },
+    {
+      title: "CKS",
+      subtitle: "Certified Kubernetes Security Specialist",
+      provider: "CNCF",
+      status: "Planned",
+      logo: "🔒",
     },
     {
       title: "GCP Associate",
@@ -146,7 +170,7 @@ export function CertificationsSection() {
             {certifications.map((cert, index) => (
               <div
                 key={index}
-                className={`bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group hover:scale-105 ${
+                className={`bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group hover:scale-105 flex flex-col ${
                   currentVisible ? "animate-scaleIn" : "opacity-0 scale-90"
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
@@ -160,8 +184,8 @@ export function CertificationsSection() {
                   />
                 </div>
 
-                {/* Content */}
-                <div className="p-6">
+                {/* Content - Flex grow to push bottom section down */}
+                <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -185,7 +209,8 @@ export function CertificationsSection() {
                     )}
                   </div>
 
-                  <div className="flex justify-between items-center">
+                  {/* Bottom section - Pushed to bottom with margin-top auto */}
+                  <div className="flex justify-between items-center mt-auto">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:scale-105 ${
                         cert.level === "Expert"
@@ -235,18 +260,18 @@ export function CertificationsSection() {
           >
             Upcoming Certifications
           </h3>
-          <div ref={upcomingRef} className="grid md:grid-cols-2 gap-6">
+          <div ref={upcomingRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {upcomingCerts.map((cert, index) => (
               <div
                 key={index}
-                className={`bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 group hover:scale-105 ${
+                className={`bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 group hover:scale-105 flex flex-col ${
                   upcomingVisible
                     ? "animate-fadeInUp"
                     : "opacity-0 translate-y-4"
                 }`}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="text-center">
+                <div className="text-center flex-grow flex flex-col">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <span className="text-2xl group-hover:animate-bounce">
                       {cert.logo}
@@ -258,11 +283,11 @@ export function CertificationsSection() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
                     {cert.subtitle}
                   </p>
-                  <p className="text-gray-500 dark:text-gray-500 text-xs mb-3">
+                  <p className="text-gray-500 dark:text-gray-500 text-xs mb-3 flex-grow">
                     {cert.provider}
                   </p>
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:scale-105 ${
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:scale-105 mt-auto ${
                       cert.status === "In Progress"
                         ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300"
                         : "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
