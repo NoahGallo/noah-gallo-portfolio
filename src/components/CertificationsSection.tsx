@@ -33,6 +33,16 @@ export function CertificationsSection() {
       verified: true,
     },
     {
+      title: "Google Cloud Associate",
+      subtitle: "Cloud Engineer",
+      provider: "Google Cloud",
+      level: "Associate",
+      image: "/images/certifications/gcp_ace.png",
+      verifyUrl:
+        "https://www.credly.com/badges/cdf478b5-9dd9-4c02-82cf-ee0bddabff8b/public_url",
+      verified: true,
+    },
+    {
       title: "Microsoft AZ-104",
       subtitle: "Azure Administrator Associate",
       provider: "Microsoft",
@@ -114,6 +124,27 @@ export function CertificationsSection() {
       logo: "☁️",
     },
     {
+      title: "Terraform Associate",
+      subtitle: "Infrastructure as Code",
+      provider: "HashiCorp",
+      status: "Planned",
+      logo: "🏗️",
+    },
+    {
+      title: "Google Professional DevOps",
+      subtitle: "DevOps Engineer",
+      provider: "Google Cloud",
+      status: "Planned",
+      logo: "⚙️",
+    },
+    {
+      title: "Google Professional Architect",
+      subtitle: "Cloud Architect",
+      provider: "Google Cloud",
+      status: "Planned",
+      logo: "🏛️",
+    },
+    {
       title: "EX280",
       subtitle: "Red Hat OpenShift Administrator",
       provider: "Red Hat",
@@ -126,13 +157,6 @@ export function CertificationsSection() {
       provider: "CNCF",
       status: "Planned",
       logo: "🔒",
-    },
-    {
-      title: "GCP Associate",
-      subtitle: "Google Cloud Associate",
-      provider: "Google Cloud",
-      status: "Planned",
-      logo: "☁️",
     },
   ];
 
@@ -260,7 +284,7 @@ export function CertificationsSection() {
           >
             Upcoming Certifications
           </h3>
-          <div ref={upcomingRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div ref={upcomingRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {upcomingCerts.map((cert, index) => (
               <div
                 key={index}
