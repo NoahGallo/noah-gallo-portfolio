@@ -1,23 +1,51 @@
 import { Calendar, MapPin, Building } from 'lucide-react'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
+
 export function ExperienceSection() {
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver()
   const { ref: experienceRef, hasIntersected: experienceVisible } = useIntersectionObserver()
 
+
   const experiences = [
     {
       company: "Devoteam Luxembourg",
-      position: "DevOps / Cloud Engineer",
+      position: "Cloud / DevOps Engineer Consultant",
       location: "Windhof, Luxembourg",
-      period: "September 2024 - Present",
+      period: "September 2024 – Present",
       description: [
-        "Completed an alternance (3 weeks work, 1 week university per month) from September 2024 to June 2025.",
-        "Started full-time as DevOps / Cloud Engineer from July 1st, 2025.",
-        "Implemented a modular hub-and-spoke cloud infrastructure using Terraform, Azure, and Azure DevOps, including reusable templates to support client projects and streamline deployments across regions.",
-        "Integrated Azure Kubernetes Service (AKS) for scalable and redundant application hosting as part of the solution.",
-        "Co-led a 3-day DevOps workshop, mentoring BTS Cloud Computing students on deploying infrastructures with Terraform, Ansible, Jenkins, and Kubernetes, while showcasing monitoring tools like Prometheus and Grafana.",
-        "Lead two 3 hour devops presentations at CESI in Nancy for 5th year Master students, covering DevOps principles, tools, and best practices.",
+        { type: "phase-header", label: "🎓 Alternance", period: "Sep 2024 – Jun 2025" },
+        "3 weeks on-site / 1 week university format, completed alongside the Master's degree program.",
+        "Co-led a 3-day DevOps workshop mentoring BTS Cloud Computing students on Terraform, Ansible, Jenkins, and Kubernetes, with Prometheus and Grafana for monitoring.",
+        "Led two 3-hour DevOps sessions at CESI Nancy for 5th-year Master's students, covering DevOps principles, tools, and best practices.",
+
+        { type: "phase-header", label: "💼 Full-Time Consultant", period: "Jul 2025 – Present" },
+        "Delivering cloud infrastructure and DevOps transformations for Luxembourg enterprise clients. Specialized in Azure architectures, container orchestration, and Infrastructure as Code.",
+
+        { type: "project-header", title: "🚄 CFL GO Project", period: "Sep 2024 – Present" },
+        "Leading infrastructure for CFL's new mobile app serving Luxembourg railway users",
+        "Deployed scalable hub-and-spoke architecture from scratch.",
+        "Implemented modular Terraform infrastructure across all environments.",
+        "Configured AKS clusters with ArgoCD GitOps workflows.",
+        "Designed performance testing infrastructure with NAT Gateway and 20 VMs.",
+        "Built automated CI/CD pipelines with integrated security scanning.",
+
+        { type: "project-header", title: "🚄 CFL Park & Ride Platform", period: "Sep 2024 – Present" },
+        "Managing production operations for the business-critical Park & Ride mobile app used daily by Luxembourg commuters.",
+        "Implemented Point-to-Site VPN in Virtual Network Gateway.",
+        "Configured Azure Firewall rules and User Defined Routes.",
+        "Managed AKS upgrades and certificate rotations across all environments.",
+        "Created and delivered monthly Cost, Security, and Maintenance reports to the client.",
+
+        { type: "project-header", title: "🏭 ArcelorMittal", period: "Jul 2025" },
+        "Infrastructure modernization for global steel manufacturer's Azure environment.",
+        "Designed Azure DevOps pipelines with branch-based environment detection.",
+        "Implemented private endpoints for enhanced security.",
+
+        { type: "project-header", title: "🐳 Champ Cargosystems — OpenShift", period: "Sep 2025" },
+        "Co-led an OpenShift POC on VMware infrastructure.",
+        "Installed highly available OpenShift cluster with Microsoft AD SSO integration.",
+        "Configured NFS storage and deployed ArgoCD + Harbor registry.",
       ],
       current: true
     },
@@ -47,10 +75,11 @@ export function ExperienceSection() {
     }
   ]
 
+
   return (
     <section id="experience" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div 
+        <div
           ref={titleRef}
           className={`text-center mb-16 transition-all duration-600 ${
             titleVisible ? 'animate-fadeInUp' : 'opacity-0 translate-y-8'
@@ -64,13 +93,14 @@ export function ExperienceSection() {
           </p>
         </div>
 
-        <div 
+
+        <div
           ref={experienceRef}
           className="space-y-8"
         >
           {experiences.map((exp, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`relative transition-all duration-600 ${
                 experienceVisible ? 'animate-slideInLeft' : 'opacity-0 -translate-x-8'
               }`}
@@ -80,18 +110,19 @@ export function ExperienceSection() {
               {index !== experiences.length - 1 && (
                 <div className="absolute left-8 top-20 w-0.5 h-full bg-gray-200 dark:bg-gray-700"></div>
               )}
-              
+
               <div className="flex gap-8">
                 {/* Timeline dot */}
                 <div className={`flex-shrink-0 w-16 h-16 rounded-full border-4 flex items-center justify-center transition-all duration-300 hover:scale-110 ${
-                  exp.current 
-                    ? 'bg-blue-600 border-blue-600 animate-pulse-slow' 
+                  exp.current
+                    ? 'bg-blue-600 border-blue-600 animate-pulse-slow'
                     : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
                 }`}>
                   <Building size={20} className={`transition-colors duration-300 ${
                     exp.current ? 'text-white' : 'text-gray-600 dark:text-gray-300'
                   }`} />
                 </div>
+
 
                 {/* Content */}
                 <div className="flex-grow bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
@@ -111,6 +142,7 @@ export function ExperienceSection() {
                     )}
                   </div>
 
+
                   <div className="flex flex-col sm:flex-row gap-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
                     <div className="flex items-center gap-2">
                       <Calendar size={16} />
@@ -122,15 +154,53 @@ export function ExperienceSection() {
                     </div>
                   </div>
 
-                  <ul className="space-y-2">
-                    {exp.description.map((item, idx) => (
-                      <li 
-                        key={idx} 
-                        className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
-                      >
-                        • {item}
-                      </li>
-                    ))}
+
+                  <ul className="space-y-1.5">
+                    {exp.description.map((item, idx) => {
+                      if (typeof item === 'string') {
+                        return (
+                          <li
+                            key={idx}
+                            className="text-gray-700 dark:text-gray-300 text-sm hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 flex gap-2"
+                          >
+                            <span className="text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5">•</span>
+                            <span>{item}</span>
+                          </li>
+                        );
+                      }
+
+                      if (item.type === 'phase-header') {
+                        return (
+                          <li key={idx} className="list-none mt-5 first:mt-0">
+                            <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 pb-1.5 mb-2">
+                              <span className="font-semibold text-gray-900 dark:text-white text-sm">
+                                {item.label}
+                              </span>
+                              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
+                                {item.period}
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      }
+
+                      if (item.type === 'project-header') {
+                        return (
+                          <li key={idx} className="list-none mt-3 mb-1">
+                            <div className="flex items-center justify-between border-l-2 border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-r">
+                              <span className="font-medium text-blue-700 dark:text-blue-300 text-sm">
+                                {item.title}
+                              </span>
+                              <span className="text-xs text-gray-500 dark:text-gray-400 ml-4 flex-shrink-0">
+                                {item.period}
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      }
+
+                      return null;
+                    })}
                   </ul>
                 </div>
               </div>

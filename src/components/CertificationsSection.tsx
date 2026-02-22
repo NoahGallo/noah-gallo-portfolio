@@ -113,6 +113,17 @@ export function CertificationsSection() {
         "https://www.credly.com/badges/e104264a-7b4f-445f-a503-54b80aa342b0/linked_in_profile",
       verified: true,
     },
+    // ✅ ADDED: CKS moved from upcoming to current
+    {
+      title: "CKS",
+      subtitle: "Certified Kubernetes Security Specialist",
+      provider: "CNCF",
+      level: "Professional",
+      image: "/images/certifications/cks.png",
+      verifyUrl:
+        "https://www.credly.com/badges/ffd354d2-51b4-4e0d-a6f2-5db285f4dc4a/public_url",
+      verified: true,
+    },
   ];
 
   const upcomingCerts = [
@@ -150,13 +161,6 @@ export function CertificationsSection() {
       provider: "Red Hat",
       status: "Planned",
       logo: "🐧",
-    },
-    {
-      title: "CKS",
-      subtitle: "Certified Kubernetes Security Specialist",
-      provider: "CNCF",
-      status: "Planned",
-      logo: "🔒",
     },
   ];
 
@@ -284,7 +288,10 @@ export function CertificationsSection() {
           >
             Upcoming Certifications
           </h3>
-          <div ref={upcomingRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            ref={upcomingRef}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {upcomingCerts.map((cert, index) => (
               <div
                 key={index}
