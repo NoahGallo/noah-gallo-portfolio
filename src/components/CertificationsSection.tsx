@@ -1,6 +1,7 @@
 import { Award, ExternalLink } from "lucide-react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
+
 export function CertificationsSection() {
   const { ref: titleRef, hasIntersected: titleVisible } =
     useIntersectionObserver();
@@ -10,6 +11,7 @@ export function CertificationsSection() {
     useIntersectionObserver();
   const { ref: goalRef, hasIntersected: goalVisible } =
     useIntersectionObserver();
+
 
   const certifications = [
     {
@@ -113,7 +115,6 @@ export function CertificationsSection() {
         "https://www.credly.com/badges/e104264a-7b4f-445f-a503-54b80aa342b0/linked_in_profile",
       verified: true,
     },
-    // ✅ ADDED: CKS moved from upcoming to current
     {
       title: "CKS",
       subtitle: "Certified Kubernetes Security Specialist",
@@ -124,7 +125,19 @@ export function CertificationsSection() {
         "https://www.credly.com/badges/ffd354d2-51b4-4e0d-a6f2-5db285f4dc4a/public_url",
       verified: true,
     },
+    // ✅ ADDED: FinOps Certified Practitioner
+    {
+      title: "FinOps Certified Practitioner",
+      subtitle: "Cloud Financial Operations",
+      provider: "FinOps Foundation",
+      level: "Practitioner",
+      image: "/images/certifications/focp.png",
+      verifyUrl:
+        "https://www.credly.com/badges/5a335b48-773c-4d59-97df-8539b943db94/public_url",
+      verified: true,
+    },
   ];
+
 
   const upcomingCerts = [
     {
@@ -164,6 +177,7 @@ export function CertificationsSection() {
     },
   ];
 
+
   return (
     <section id="certifications" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -181,6 +195,7 @@ export function CertificationsSection() {
             platforms, DevOps practices, and infrastructure management
           </p>
         </div>
+
 
         {/* Current Certifications */}
         <div className="mb-16">
@@ -212,6 +227,7 @@ export function CertificationsSection() {
                   />
                 </div>
 
+
                 {/* Content - Flex grow to push bottom section down */}
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
@@ -227,6 +243,7 @@ export function CertificationsSection() {
                       </p>
                     </div>
 
+
                     {cert.verified && (
                       <div className="bg-green-100 dark:bg-green-900/30 rounded-full p-1.5 group-hover:scale-110 transition-transform">
                         <Award
@@ -236,6 +253,7 @@ export function CertificationsSection() {
                       </div>
                     )}
                   </div>
+
 
                   {/* Bottom section - Pushed to bottom with margin-top auto */}
                   <div className="flex justify-between items-center mt-auto">
@@ -251,11 +269,14 @@ export function CertificationsSection() {
                           ? "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
                           : cert.level === "C2 Proficient"
                           ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300"
+                          : cert.level === "Practitioner"
+                          ? "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
                           : "bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300"
                       }`}
                     >
                       {cert.level}
                     </span>
+
 
                     {cert.verified && cert.verifyUrl ? (
                       <a
@@ -278,6 +299,7 @@ export function CertificationsSection() {
             ))}
           </div>
         </div>
+
 
         {/* Upcoming Certifications */}
         <div>
@@ -332,6 +354,7 @@ export function CertificationsSection() {
           </div>
         </div>
 
+
         {/* Kubestronaut Goal */}
         <div
           ref={goalRef}
@@ -351,6 +374,7 @@ export function CertificationsSection() {
               ecosystem.
             </p>
           </div>
+
 
           {/* Floating elements */}
           <div className="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full animate-float"></div>
