@@ -125,7 +125,6 @@ export function CertificationsSection() {
         "https://www.credly.com/badges/ffd354d2-51b4-4e0d-a6f2-5db285f4dc4a/public_url",
       verified: true,
     },
-    // ✅ ADDED: FinOps Certified Practitioner
     {
       title: "FinOps Certified Practitioner",
       subtitle: "Cloud Financial Operations",
@@ -134,6 +133,16 @@ export function CertificationsSection() {
       image: "/images/certifications/focp.png",
       verifyUrl:
         "https://www.credly.com/badges/5a335b48-773c-4d59-97df-8539b943db94/public_url",
+      verified: true,
+    },
+    {
+      title: "FinOps Certified Engineer",
+      subtitle: "Cloud Cost Optimization & Engineering",
+      provider: "FinOps Foundation",
+      level: "Engineer",
+      image: "/images/certifications/foce.png",
+      verifyUrl:
+        "https://www.credly.com/badges/a8ce1006-ab48-4a23-a32e-5c22120c2cf7/public_url",
       verified: true,
     },
   ];
@@ -271,6 +280,8 @@ export function CertificationsSection() {
                           ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300"
                           : cert.level === "Practitioner"
                           ? "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
+                          : cert.level === "Engineer"
+                          ? "bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300"
                           : "bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300"
                       }`}
                     >
