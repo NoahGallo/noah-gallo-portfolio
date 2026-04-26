@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local AI assistant context — kept on disk, never committed
+CLAUDE.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

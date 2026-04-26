@@ -1,43 +1,50 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+/**
+ * ThemeContext — light/dark theme provider.
+ *
+ * On first load:
+ *   1. Use the user's previously saved choice from localStorage if any
+ *   2. Otherwise, default to light theme
+ *
+ * The chosen theme is applied by toggling the `dark` class on <html>,
+ * which is what Tailwind's `dark:` variants key off of.
+ *
+ * The matching `useTheme` hook lives in `src/hooks/useTheme.ts`.
+ */
+import { createContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
-// Define what our theme context will contain
-type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark'
 
-interface ThemeContextType {
+export interface ThemeContextType {
   theme: Theme
   toggleTheme: () => void
 }
 
-// Create the context (like a "box" to store our theme data)
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const STORAGE_KEY = 'noah-portfolio-theme'
 
-// Provider component - wraps our app and provides theme to all children
+// eslint-disable-next-line react-refresh/only-export-components -- context co-located with provider for ergonomics; matching `useTheme` hook lives in src/hooks/useTheme.ts.
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'light'
+  const saved = window.localStorage.getItem(STORAGE_KEY)
+  if (saved === 'light' || saved === 'dark') return saved
+  return 'light'
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light') // Default to light
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
-  // Toggle between light and dark
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  // Apply theme to HTML element (for Tailwind dark mode)
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark')
+    window.localStorage.setItem(STORAGE_KEY, theme)
   }, [theme])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
   )
-}
-
-// Custom hook to use theme in any component
-export function useTheme() {
-  const context = useContext(ThemeContext)
-  if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider')
-  }
-  return context
 }
