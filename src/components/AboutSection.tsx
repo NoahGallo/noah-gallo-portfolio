@@ -1,197 +1,170 @@
 /**
- * AboutSection — personal info (location, languages), education timeline,
- * and three "key strengths" cards.
- *
- * Uses a single IntersectionObserver for the whole section: child blocks
- * stagger their reveal via `transitionDelay`. Static color classes (e.g.
- * `bg-blue-100`) are used directly instead of template-string interpolation,
- * because Tailwind's JIT scanner can't see dynamic class names.
+ * AboutSection — editorial about page: operator-tone headline + body, a
+ * typographic profile sidebar (no icons), education list, and three
+ * "how I work" columns. One IntersectionObserver per block for reveals.
  */
-import { MapPin, Calendar, Languages, GraduationCap } from 'lucide-react'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
-type StrengthColor = 'blue' | 'green' | 'purple'
-
-// Static class map — Tailwind cannot generate `bg-${color}-100` from template
-// strings, so we hand-pick the full class names per color.
-const STRENGTH_STYLES: Record<StrengthColor, string> = {
-  blue: 'bg-blue-100 dark:bg-blue-900/30',
-  green: 'bg-green-100 dark:bg-green-900/30',
-  purple: 'bg-purple-100 dark:bg-purple-900/30',
-}
-
-const PERSONAL_INFO = [
-  { icon: MapPin, text: 'Mersch, Luxembourg' },
-  { icon: Calendar, text: 'Born: March 17, 2000 (25 years old)' },
-] as const
-
 const LANGUAGES = [
-  '🇱🇺 Luxembourgish (Native)',
-  '🇩🇪 German (Fluent)',
-  '🇬🇧 English (Fluent)',
-  '🇫🇷 French (Fluent)',
+  ['Luxembourgish', 'Native (C2)'],
+  ['German', 'Fluent (C2)'],
+  ['English', 'Fluent (C1)'],
+  ['French', 'Fluent (C1)'],
 ] as const
 
 const EDUCATION = [
   {
-    title: "Master's Degree",
-    description: "Master's in IT – Cloud Computing & Mobility",
+    title: "Master's in IT — Cloud Computing & Mobility",
     school: 'Université de Picardie Jules Verne',
-    period: 'September 2023 – June 2025',
-    showIcon: true,
+    period: 'Sep 2023 – Jun 2025',
   },
   {
-    title: "Bachelor's Degree",
-    description: 'Professional License – Networks & Telecommunications',
+    title: 'Professional License — Networks & Telecommunications',
     school: 'Université Grenoble Alpes',
-    period: 'September 2022 – July 2023',
-    showIcon: false,
+    period: 'Sep 2022 – Jul 2023',
   },
   {
-    title: 'Technical Diploma',
-    description: 'BTS Cloud Computing',
+    title: 'BTS Cloud Computing',
     school: 'Lycée Guillaume Kroll',
-    period: 'July 2020 – July 2022',
-    showIcon: false,
+    period: 'Jul 2020 – Jul 2022',
   },
 ] as const
 
-const STRENGTHS: Array<{
-  emoji: string
-  title: string
-  description: string
-  color: StrengthColor
-}> = [
+const STRENGTHS = [
   {
-    emoji: '☁️',
-    title: 'Cloud Architecture',
-    description: 'Designing and implementing scalable cloud infrastructures across Azure, AWS, and GCP',
-    color: 'blue',
+    label: 'Platforms',
+    description:
+      'Designing and operating Azure / AKS platforms — hub-and-spoke networking, private endpoints, security, GitOps delivery with ArgoCD.',
   },
   {
-    emoji: '🔄',
-    title: 'DevOps Automation',
-    description: 'Automating infrastructure provisioning and deployment with modern tools',
-    color: 'green',
+    label: 'Automation',
+    description:
+      'Reusable, modular Terraform across multi-environment infrastructure (test / qual / prod). CI/CD pipelines with integrated security scanning.',
   },
   {
-    emoji: '🏗️',
-    title: 'Infrastructure as Code',
-    description: 'Expert in Terraform and Ansible for reproducible infrastructure management',
-    color: 'purple',
+    label: 'Operations',
+    description:
+      'Production change management, monthly on-call rotation, security-posture reporting, and per-service cost analysis (FinOps).',
   },
-]
+] as const
 
 export function AboutSection() {
-  const { ref: sectionRef, isVisible } = useIntersectionObserver()
+  const { ref: headerRef, isVisible: headerVisible } = useIntersectionObserver()
+  const { ref: bodyRef, isVisible: bodyVisible } = useIntersectionObserver()
+  const { ref: eduRef, isVisible: eduVisible } = useIntersectionObserver()
+  const { ref: workRef, isVisible: workVisible } = useIntersectionObserver()
 
-  // Returns class names for a scroll-reveal block with optional slide axis.
-  const revealCls = (extra = '', axis: 'y' | 'x' = 'y') => {
-    const hidden = axis === 'y' ? 'opacity-0 translate-y-6' : 'opacity-0 -translate-x-6'
-    const shown = axis === 'y' ? 'opacity-100 translate-y-0' : 'opacity-100 translate-x-0'
-    return `transition-all duration-700 ease-out ${extra} ${isVisible ? shown : hidden}`
-  }
-  const revealStyle = (delayMs: number) => ({ transitionDelay: `${delayMs}ms` })
+  const reveal = (visible: boolean, extra = '') =>
+    `transition-all duration-700 ease-out ${extra} ${
+      visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+    }`
 
   return (
-    <section ref={sectionRef} id="about" className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <div className={revealCls('text-center mb-16')} style={revealStyle(0)}>
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">About Me</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Recently graduated Cloud & DevOps Engineer with experience in automating
-            infrastructure and designing scalable cloud solutions.
+    <section id="about" className="py-24 bg-surface-2">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div ref={headerRef} className={reveal(headerVisible, 'mb-16')}>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
+            02 · About
           </p>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-ink leading-[1.05] max-w-3xl">
+            Building and running{' '}
+            <span className="font-bold">production cloud infrastructure.</span>
+          </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Personal info */}
-          <div className={revealCls('', 'x')} style={revealStyle(150)}>
-            <h3 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
-              Personal Information
-            </h3>
-
-            <div className="space-y-4">
-              {PERSONAL_INFO.map(({ icon: Icon, text }) => (
-                <div
-                  key={text}
-                  className="flex items-center gap-3 transition-transform duration-200 hover:translate-x-1"
-                >
-                  <Icon className="text-blue-600 dark:text-blue-400 flex-shrink-0" size={20} />
-                  <span className="text-gray-700 dark:text-gray-300">{text}</span>
-                </div>
-              ))}
-
-              <div className="flex items-start gap-3">
-                <Languages className="text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" size={20} />
-                <div className="text-gray-700 dark:text-gray-300">
-                  <p className="font-medium mb-2">Languages:</p>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {LANGUAGES.map((lang) => (
-                      <span key={lang}>{lang}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Body + profile sidebar */}
+        <div
+          ref={bodyRef}
+          className={reveal(bodyVisible, 'grid lg:grid-cols-[1.6fr_1fr] gap-12 lg:gap-20 mb-24')}
+        >
+          <div className="space-y-5 text-ink/85 text-[15px] md:text-base leading-relaxed">
+            <p>
+              As a Devoteam consultant embedded in CFL's Cloud Native Platform team, I built CFL GO
+              — the Luxembourg national railway's mobile-app platform — end to end on Azure, and
+              operate the Park &amp; Ride platform that Luxembourg commuters rely on daily. Day to
+              day across Azure Firewall, Application Gateway, API Management, Service Bus, and
+              Event Hub, with hands-on AKS, ArgoCD, Grafana, and Helm.
+            </p>
+            <p>
+              My focus is reproducible infrastructure: modular Terraform across multi-environment
+              deployments, GitOps delivery with ArgoCD, Kubernetes security policy, and cost-aware
+              operations (FinOps). Part of the platform's monthly on-call rotation.
+            </p>
           </div>
 
-          {/* Education timeline */}
-          <div className={revealCls()} style={revealStyle(250)}>
-            <h3 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">Education</h3>
-
-            <div className="space-y-6">
-              {EDUCATION.map((edu, index) => (
-                <div
-                  key={edu.title}
-                  className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  style={{ transitionDelay: `${300 + index * 100}ms` }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    {edu.showIcon && (
-                      <GraduationCap className="text-blue-600 dark:text-blue-400" size={24} />
-                    )}
-                    <h4 className="font-semibold text-gray-900 dark:text-white">{edu.title}</h4>
+          <dl className="space-y-6">
+            <ProfileRow label="Location" value="Mersch, Luxembourg" />
+            <ProfileRow label="Availability" value="Open to Switzerland" />
+            <div>
+              <dt className="font-mono text-xs uppercase tracking-wider text-muted mb-2">
+                Languages
+              </dt>
+              <dd className="space-y-1">
+                {LANGUAGES.map(([lang, level]) => (
+                  <div
+                    key={lang}
+                    className="flex justify-between items-baseline gap-4 text-ink/90 text-sm"
+                  >
+                    <span>{lang}</span>
+                    <span className="font-mono text-xs text-muted">{level}</span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    {edu.description}
-                    <br />
-                    <span className="text-blue-600 dark:text-blue-400">{edu.school}</span>
-                    <br />
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{edu.period}</span>
-                  </p>
-                </div>
-              ))}
+                ))}
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
 
-        {/* Key strengths */}
-        <div className={revealCls('mt-16')} style={revealStyle(400)}>
-          <h3 className="text-2xl font-semibold text-center mb-8 text-gray-900 dark:text-white">
-            Key Strengths
-          </h3>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {STRENGTHS.map((strength, index) => (
-              <div
-                key={strength.title}
-                className="text-center group cursor-default transition-transform duration-300 hover:-translate-y-1"
-                style={{ transitionDelay: `${500 + index * 100}ms` }}
+        {/* Education */}
+        <div ref={eduRef} className={reveal(eduVisible, 'mb-24')}>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-6">
+            Education
+          </p>
+          <ol className="divide-y divide-edge">
+            {EDUCATION.map((edu) => (
+              <li
+                key={edu.title}
+                className="py-6 first:pt-0 last:pb-0 grid md:grid-cols-[1fr_auto] gap-2 md:gap-8 items-baseline"
               >
-                <div
-                  className={`${STRENGTH_STYLES[strength.color]} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <span className="text-2xl">{strength.emoji}</span>
+                <div>
+                  <h4 className="font-display text-xl font-semibold text-ink">{edu.title}</h4>
+                  <p className="text-muted text-sm mt-1">{edu.school}</p>
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{strength.title}</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">{strength.description}</p>
+                <p className="font-mono text-xs uppercase tracking-wider text-muted">
+                  {edu.period}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* How I work */}
+        <div ref={workRef} className={reveal(workVisible)}>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-6">
+            How I work
+          </p>
+          <div className="grid md:grid-cols-3 gap-10 lg:gap-12">
+            {STRENGTHS.map((s, idx) => (
+              <div key={s.label}>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-ink mb-3">
+                  <span className="text-accent mr-2">{String(idx + 1).padStart(2, '0')}</span>
+                  {s.label}
+                </p>
+                <p className="text-ink/85 text-sm leading-relaxed">{s.description}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function ProfileRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="font-mono text-xs uppercase tracking-wider text-muted mb-1.5">{label}</dt>
+      <dd className="text-ink text-base">{value}</dd>
+    </div>
   )
 }

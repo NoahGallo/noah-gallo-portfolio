@@ -2,40 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth in-page scroll for anchor navigation */
+/*
+ * Design tokens — all colors live here as CSS variables so the palette is
+ * trivial to swap. Tailwind utilities (bg-canvas, text-ink, text-accent, etc.)
+ * are wired to these via tailwind.config.js.
+ *
+ * Light mode: warm off-white with strong contrast — not a washed-out white.
+ * Dark mode (primary): deep desaturated ink with one warm amber accent.
+ * To try a cooler look, swap `--accent` / `--accent-strong` to a teal.
+ */
+:root {
+  --canvas: #F7F6F2;
+  --surface: #FFFFFF;
+  --surface-2: #EFEDE6;
+  --edge: #DAD6CA;
+  --ink: #15171C;
+  --muted: #5A6068;
+  --accent: #B7762F;
+  --accent-strong: #8F5A1E;
+}
+
+.dark {
+  --canvas: #0B0E14;
+  --surface: #11151D;
+  --surface-2: #161B25;
+  --edge: #232936;
+  --ink: #E6E7EA;
+  --muted: #9098A6;
+  --accent: #E0A458;
+  --accent-strong: #F0B872;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar — same in both themes via Tailwind dark: variants */
+body {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--canvas);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: 'Bricolage Grotesque', 'IBM Plex Sans', sans-serif;
+  font-optical-sizing: auto;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
 @layer base {
   ::-webkit-scrollbar {
     width: 8px;
   }
-
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100 dark:bg-gray-800;
+    background-color: var(--canvas);
   }
-
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+    background-color: var(--edge);
+    border-radius: 9999px;
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500 dark:bg-gray-500;
+    background-color: var(--muted);
   }
 }
 
-/* Shared focus ring helper for buttons / links */
 .focus-ring {
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas;
 }
 
-/*
- * Respect users who request reduced motion (accessibility).
- * Disables long transitions and infinite animations like the floating blobs
- * — keeps interactions usable without motion sickness.
- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

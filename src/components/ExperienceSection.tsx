@@ -1,18 +1,15 @@
 /**
- * ExperienceSection — vertical timeline of professional roles. Each role
- * has a list of bullet points; bullets can also be "phase headers"
- * (alternance vs. full-time) or "project headers" (named client projects).
- *
- * Reveal animations: one observer per card, so each card slides in once
- * it scrolls into view (rather than all firing at once with the section).
+ * ExperienceSection — editorial timeline. Each role gets a left-rail with
+ * date/location (mono) and a content column with phase markers, project
+ * labels, and bullets. One marker dot per role; the current role's dot is
+ * accent-filled. Reveal: one observer per role-card.
  */
-import { Calendar, MapPin, Building } from 'lucide-react'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
 type DescriptionItem =
   | string
   | { type: 'phase-header'; label: string; period: string }
-  | { type: 'project-header'; title: string; period: string }
+  | { type: 'tag-header'; tag: 'Project' | 'Partnership'; title: string; period: string }
 
 interface Experience {
   company: string
@@ -28,66 +25,69 @@ const EXPERIENCES: Experience[] = [
     company: 'Devoteam Luxembourg',
     position: 'Cloud / DevOps Engineer Consultant',
     location: 'Windhof, Luxembourg',
-    period: 'September 2024 – Present',
-    description: [
-      { type: 'phase-header', label: '🎓 Alternance', period: 'Sep 2024 – Jun 2025' },
-      '3 weeks on-site / 1 week university format, completed alongside the Master\'s degree program.',
-      'Co-led a 3-day DevOps workshop mentoring BTS Cloud Computing students on Terraform, Ansible, Jenkins, and Kubernetes, with Prometheus and Grafana for monitoring.',
-      'Led two 3-hour DevOps sessions at CESI Nancy for 5th-year Master\'s students, covering DevOps principles, tools, and best practices.',
-
-      { type: 'phase-header', label: '💼 Full-Time Consultant', period: 'Jul 2025 – Present' },
-      'Delivering cloud infrastructure and DevOps transformations for Luxembourg enterprise clients. Specialized in Azure architectures, container orchestration, and Infrastructure as Code.',
-
-      { type: 'project-header', title: '🚄 CFL GO Project', period: 'Sep 2024 – Present' },
-      "Leading infrastructure for CFL's new mobile app serving Luxembourg railway users",
-      'Deployed scalable hub-and-spoke architecture from scratch.',
-      'Implemented modular Terraform infrastructure across all environments.',
-      'Configured AKS clusters with ArgoCD GitOps workflows.',
-      'Designed performance testing infrastructure with NAT Gateway and 20 VMs.',
-      'Built automated CI/CD pipelines with integrated security scanning.',
-
-      { type: 'project-header', title: '🚄 CFL Park & Ride Platform', period: 'Sep 2024 – Present' },
-      'Managing production operations for the business-critical Park & Ride mobile app used daily by Luxembourg commuters.',
-      'Implemented Point-to-Site VPN in Virtual Network Gateway.',
-      'Configured Azure Firewall rules and User Defined Routes.',
-      'Managed AKS upgrades and certificate rotations across all environments.',
-      'Created and delivered monthly Cost, Security, and Maintenance reports to the client.',
-
-      { type: 'project-header', title: '🏭 ArcelorMittal', period: 'Jul 2025' },
-      "Infrastructure modernization for global steel manufacturer's Azure environment.",
-      'Designed Azure DevOps pipelines with branch-based environment detection.',
-      'Implemented private endpoints for enhanced security.',
-
-      { type: 'project-header', title: '🐳 Champ Cargosystems — OpenShift', period: 'Sep 2025' },
-      'Co-led an OpenShift POC on VMware infrastructure.',
-      'Installed highly available OpenShift cluster with Microsoft AD SSO integration.',
-      'Configured NFS storage and deployed ArgoCD + Harbor registry.',
-    ],
+    period: 'Sep 2024 – Present',
     current: true,
+    description: [
+      { type: 'phase-header', label: 'Alternance', period: 'Sep 2024 – Jun 2025' },
+      "3 weeks on-site / 1 week university, completed alongside the Master's program.",
+      'Co-led a 3-day DevOps workshop mentoring BTS Cloud Computing students on Terraform, Ansible, Kubernetes, with Prometheus and Grafana for monitoring.',
+      "Led two 3-hour DevOps sessions at CESI Nancy for 5th-year Master's students, covering DevOps principles, tooling, and practice.",
+
+      { type: 'phase-header', label: 'Full-Time Consultant', period: 'Jul 2025 – Present' },
+      'Delivering cloud infrastructure and DevOps transformations for Luxembourg enterprise clients — Azure architectures, container orchestration, Infrastructure as Code.',
+
+      { type: 'phase-header', label: 'L3 @ CFL Cloud Native Platform', period: 'Since Mar 2026' },
+      "Embedded daily in CFL's platform team in the client office; handle production change requests across multi-environment infrastructure (test/qual/prod).",
+      'Day-to-day across Azure Firewall, Application Gateway, API Management, Service Bus, and Event Hub, with hands-on AKS, ArgoCD, Grafana, and Helm.',
+      "Part of the platform's monthly on-call rotation.",
+
+      { type: 'tag-header', tag: 'Project', title: 'CFL GO', period: 'Sep 2024 – Present' },
+      "Built CFL's mobile-app platform end to end on Azure — in production since April 2026.",
+      'Designed reusable modular Terraform: AKS plus the full hub-and-spoke network (Azure Firewall, Application Gateway, private endpoints, VNet peering).',
+      'Implemented ArgoCD for GitOps-based continuous delivery.',
+      'Built automated CI/CD pipelines with integrated security scanning.',
+      'Designed performance-testing infrastructure with NAT Gateway and 20 VMs.',
+
+      { type: 'tag-header', tag: 'Project', title: 'CFL Park & Ride', period: 'Sep 2024 – Present' },
+      'Inherited the production platform Luxembourg commuters use daily; operate it and add features as the product evolves.',
+      'AKS upgrades, Key Vault certificate rotations.',
+      'Azure Firewall / UDR and Point-to-Site VPN configuration.',
+      'Monthly client report covering infrastructure changes, security posture (Sentinel, Workbooks), and per-service cost analysis (Azure Cost Analysis).',
+
+      { type: 'tag-header', tag: 'Project', title: 'ArcelorMittal', period: 'Jul 2025' },
+      "Designed Azure DevOps CI/CD pipelines with branch-based environment detection and private-endpoint backend security for ArcelorMittal's adoption of Terraform IaC.",
+
+      { type: 'tag-header', tag: 'Project', title: 'Champ Cargosystems — OpenShift', period: 'Sep 2025' },
+      'Co-led an OpenShift proof of concept on VMware vSphere: AD SSO, NFS storage, ArgoCD, Harbor registry.',
+
+      { type: 'tag-header', tag: 'Partnership', title: 'Veeam', period: 'Ongoing' },
+      "Established and run Devoteam's Veeam technology partnership as main point of contact — license pipeline, Veeam Kasten (Kubernetes backup) promotion to clients.",
+      "Represented Veeam at Devoteam's ForgeAI event (2026).",
+    ],
   },
   {
     company: 'Fujitsu Luxembourg',
     position: 'Cloud Engineering Intern',
     location: 'Mamer, Luxembourg',
-    period: 'January 2024 – June 2024',
-    description: [
-      'Automated infrastructure deployments using Terraform to deploy Azure resources, including virtual machines, networks, and storage accounts.',
-      'Designed and implemented Infrastructure as Code solutions to streamline OpenShift cluster deployments across hybrid environments.',
-      'Passed Microsoft Azure Certifications as the AZ-104 (Azure Administrator Associate) and AZ-305 (Azure Solutions Architect Expert).',
-    ],
+    period: 'Jan 2024 – Jun 2024',
     current: false,
+    description: [
+      'Automated multi-cloud OpenShift cluster deployments across Azure, AWS, GCP, Nutanix, and VMware with Terraform IaC — reducing provisioning time and ensuring repeatable infrastructure.',
+      'Built and maintained Azure DevOps CI/CD pipelines for automated cloud infrastructure delivery.',
+      'Passed Microsoft AZ-104 (Azure Administrator Associate) and AZ-305 (Azure Solutions Architect Expert).',
+    ],
   },
   {
     company: 'NTT Luxembourg',
     position: 'Managed Services Intern',
     location: 'Capellen, Luxembourg',
-    period: 'March 2023 - June 2023',
-    description: [
-      'Created VM templates in vCenter using HashiCorp Packer and deployed them with Terraform.',
-      'Automated post-deployment configurations with Ansible, streamlining infrastructure provisioning.',
-      'Passed the AZ-900 (Microsoft Azure Fundamentals) certification.',
-    ],
+    period: 'Mar 2023 – Jun 2023',
     current: false,
+    description: [
+      'Created VM templates in vCenter with HashiCorp Packer; deployed them with Terraform.',
+      'Automated post-deployment configuration with Ansible, streamlining provisioning.',
+      'Passed AZ-900 (Microsoft Azure Fundamentals).',
+    ],
   },
 ]
 
@@ -95,108 +95,92 @@ function ExperienceCard({ exp, isLast }: { exp: Experience; isLast: boolean }) {
   const { ref, isVisible } = useIntersectionObserver()
 
   return (
-    <div
+    <article
       ref={ref}
-      className={`relative transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
-      }`}
+      className={`grid md:grid-cols-[180px_1fr] gap-x-10 gap-y-4 relative transition-all duration-700 ease-out ${
+        isLast ? '' : 'pb-16'
+      } ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
     >
-      {/* Vertical timeline line connecting cards */}
-      {!isLast && (
+      {/* Left rail — marker + date + location */}
+      <div className="relative pl-6">
+        {/* Vertical connector to next role */}
+        {!isLast && (
+          <div
+            className="absolute left-[5px] top-3 bottom-[-4rem] w-px bg-edge"
+            aria-hidden="true"
+          />
+        )}
+        {/* Marker dot */}
         <div
-          className="absolute left-8 top-16 w-0.5 h-full bg-gray-200 dark:bg-gray-700"
+          className={`absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border ${
+            exp.current ? 'bg-accent border-accent' : 'bg-canvas border-edge'
+          }`}
           aria-hidden="true"
         />
-      )}
-
-      <div className="flex gap-8">
-        {/* Timeline dot */}
-        <div
-          className={`flex-shrink-0 w-16 h-16 rounded-full border-4 flex items-center justify-center transition-transform duration-300 hover:scale-110 ${
-            exp.current
-              ? 'bg-blue-600 border-blue-600 animate-pulse-slow'
-              : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
-          }`}
-        >
-          <Building
-            size={20}
-            className={exp.current ? 'text-white' : 'text-gray-600 dark:text-gray-300'}
-          />
+        <div className="font-mono text-xs uppercase tracking-wider text-ink">
+          {exp.period}
         </div>
+        <div className="font-mono text-xs uppercase tracking-wider text-muted mt-2">
+          {exp.location}
+        </div>
+      </div>
 
-        {/* Content card */}
-        <div className="flex-grow bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                {exp.position}
-              </h3>
-              <p className="text-blue-600 dark:text-blue-400 font-medium">{exp.company}</p>
-            </div>
-            {exp.current && (
-              <span className="inline-block bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium self-start">
-                Current
-              </span>
-            )}
-          </div>
+      {/* Content column */}
+      <div className="md:pt-0">
+        <h3 className="font-display text-2xl font-semibold text-ink leading-tight">
+          {exp.position}
+        </h3>
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mt-1.5">
+          {exp.company}
+        </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
-            <div className="flex items-center gap-2">
-              <Calendar size={16} />
-              <span>{exp.period}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin size={16} />
-              <span>{exp.location}</span>
-            </div>
-          </div>
-
-          <ul className="space-y-1.5">
-            {exp.description.map((item, idx) => {
-              if (typeof item === 'string') {
-                return (
-                  <li
-                    key={idx}
-                    className="text-gray-700 dark:text-gray-300 text-sm flex gap-2"
-                  >
-                    <span className="text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                )
-              }
-
-              if (item.type === 'phase-header') {
-                return (
-                  <li key={idx} className="list-none mt-5 first:mt-0">
-                    <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 pb-1.5 mb-2">
-                      <span className="font-semibold text-gray-900 dark:text-white text-sm">
-                        {item.label}
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
-                        {item.period}
-                      </span>
-                    </div>
-                  </li>
-                )
-              }
-
+        <div className="mt-6 space-y-2">
+          {exp.description.map((item, idx) => {
+            if (typeof item === 'string') {
               return (
-                <li key={idx} className="list-none mt-3 mb-1">
-                  <div className="flex items-center justify-between border-l-2 border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-r">
-                    <span className="font-medium text-blue-700 dark:text-blue-300 text-sm">
-                      {item.title}
+                <div
+                  key={idx}
+                  className="text-ink/85 text-[15px] leading-relaxed flex gap-3"
+                >
+                  <span className="text-muted flex-shrink-0 select-none" aria-hidden="true">
+                    —
+                  </span>
+                  <span>{item}</span>
+                </div>
+              )
+            }
+
+            if (item.type === 'phase-header') {
+              return (
+                <div key={idx} className="pt-6 first:pt-0">
+                  <div className="flex items-baseline justify-between gap-4 border-t border-edge pt-4 mb-3">
+                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink">
+                      {item.label}
                     </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-4 flex-shrink-0">
+                    <span className="font-mono text-xs text-muted flex-shrink-0">
                       {item.period}
                     </span>
                   </div>
-                </li>
+                </div>
               )
-            })}
-          </ul>
+            }
+
+            return (
+              <div key={idx} className="pt-5 first:pt-0">
+                <div className="flex items-baseline justify-between gap-4 mb-2">
+                  <span className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+                    {item.tag} — {item.title}
+                  </span>
+                  <span className="font-mono text-xs text-muted flex-shrink-0">
+                    {item.period}
+                  </span>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 
@@ -204,23 +188,23 @@ export function ExperienceSection() {
   const { ref: titleRef, isVisible: titleVisible } = useIntersectionObserver()
 
   return (
-    <section id="experience" className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="py-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={titleRef}
-          className={`text-center mb-16 transition-all duration-700 ease-out ${
+          className={`mb-16 transition-all duration-700 ease-out ${
             titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Professional Experience
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Building expertise through hands-on experience in cloud engineering and DevOps automation
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
+            03 · Experience
           </p>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-ink">
+            Where I've built things.
+          </h2>
         </div>
 
-        <div className="space-y-8">
+        <div>
           {EXPERIENCES.map((exp, index) => (
             <ExperienceCard
               key={exp.company}

@@ -14,6 +14,7 @@ dist-ssr
 
 # Local AI assistant context — kept on disk, never committed
 CLAUDE.md
+.claude/
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +26,4 @@ CLAUDE.md
 *.njsproj
 *.sln
 *.sw?
+portfolio-content.md

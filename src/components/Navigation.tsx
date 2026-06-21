@@ -53,27 +53,20 @@ export function Navigation() {
   return (
     <>
       {/* Desktop nav */}
-      <nav className="hidden md:flex space-x-8" aria-label="Primary">
-        {NAV_ITEMS.map((item) => {
+      <nav className="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-wider" aria-label="Primary">
+        {NAV_ITEMS.map((item, idx) => {
           const active = activeSection === item.id
           return (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`focus-ring relative font-medium transition-colors duration-200 ${
-                active
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+              className={`focus-ring transition-colors duration-200 ${
+                active ? 'text-accent' : 'text-muted hover:text-ink'
               }`}
               aria-current={active ? 'page' : undefined}
             >
+              <span className="text-muted/60 mr-1.5">{String(idx + 1).padStart(2, '0')}</span>
               {item.name}
-              {/* Underline grows on hover/active */}
-              <span
-                className={`absolute -bottom-1 left-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 ${
-                  active ? 'w-full' : 'w-0'
-                }`}
-              />
             </button>
           )
         })}
@@ -83,7 +76,7 @@ export function Navigation() {
       <button
         type="button"
         onClick={() => setIsMobileOpen((v) => !v)}
-        className="focus-ring md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="focus-ring md:hidden p-2 rounded-md border border-edge hover:border-accent hover:text-accent transition-colors"
         aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isMobileOpen}
       >
@@ -92,21 +85,20 @@ export function Navigation() {
 
       {/* Mobile dropdown */}
       {isMobileOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-lg">
-          <nav className="flex flex-col p-4 gap-1" aria-label="Mobile primary">
-            {NAV_ITEMS.map((item) => {
+        <div className="md:hidden absolute top-full left-0 right-0 bg-canvas border-b border-edge shadow-lg">
+          <nav className="flex flex-col p-4 gap-1 font-mono text-sm uppercase tracking-wider" aria-label="Mobile primary">
+            {NAV_ITEMS.map((item, idx) => {
               const active = activeSection === item.id
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`focus-ring text-left px-4 py-3 rounded-lg font-medium transition-colors duration-200 ${
-                    active
-                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                  className={`focus-ring text-left px-4 py-3 rounded-md transition-colors duration-200 ${
+                    active ? 'text-accent' : 'text-muted hover:text-ink'
                   }`}
                   aria-current={active ? 'page' : undefined}
                 >
+                  <span className="text-muted/60 mr-2">{String(idx + 1).padStart(2, '0')}</span>
                   {item.name}
                 </button>
               )

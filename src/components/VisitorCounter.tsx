@@ -1,19 +1,26 @@
 /**
- * VisitorCounter — tiny floating widget at bottom-right that shows how many
- * times the page has been visited. Backed by the Python Azure Function in
- * /api/function_app.py, which atomically increments a counter in Cosmos DB
- * and returns the new value.
+ * VisitorCounter — always-visible corner tag at the bottom-right of the
+ * viewport. Backed by the Python Azure Function in /api/function_app.py,
+ * which atomically increments a counter in Cosmos DB and returns the new
+ * value.
  *
- * The widget hides itself silently if the API call fails — no error UI,
- * since the counter is decorative, not load-bearing.
+ * Renders immediately with an em-dash placeholder so the tag is always
+ * present (recognisable as part of the page chrome). If the API request
+ * fails, the dash stays — no error UI, since the counter is decorative
+ * metadata, not load-bearing.
  */
 import { useEffect, useRef, useState } from 'react'
-import { Eye } from 'lucide-react'
 
 export function VisitorCounter() {
   const [visitorCount, setVisitorCount] = useState<number | null>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const hasFetched = useRef(false)
+
+  useEffect(() => {
+    // Fade-in once the component is on the page
+    const t = window.setTimeout(() => setMounted(true), 50)
+    return () => window.clearTimeout(t)
+  }, [])
 
   useEffect(() => {
     // Guard against React 19 strict-mode double-invoke in dev
@@ -31,10 +38,9 @@ export function VisitorCounter() {
         const data = (await response.json()) as { count?: number }
         if (typeof data.count === 'number') {
           setVisitorCount(data.count)
-          // Brief delay so the slide-in transition fires after the count is set
-          window.setTimeout(() => setIsVisible(true), 100)
         }
       } catch (error) {
+        // Decorative — fail silently and leave the placeholder in place.
         console.error('Failed to fetch visitor count:', error)
       }
     }
@@ -42,23 +48,17 @@ export function VisitorCounter() {
     fetchVisitorCount()
   }, [])
 
-  if (visitorCount === null) return null
-
   return (
     <div
-      className={`fixed bottom-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-gray-200 dark:border-gray-700 transition-all duration-500 hover:scale-105 hover:shadow-xl group ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+      className={`fixed bottom-0 right-0 z-40 border-t border-l border-edge bg-canvas/90 backdrop-blur-md px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-opacity duration-700 ${
+        mounted ? 'opacity-100' : 'opacity-0'
       }`}
+      aria-live="polite"
     >
-      <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-        <Eye size={16} className="text-blue-600 dark:text-blue-400" aria-hidden="true" />
-        <span className="font-medium">
-          Visitors:{' '}
-          <span className="text-blue-600 dark:text-blue-400 font-semibold">
-            {visitorCount.toLocaleString()}
-          </span>
-        </span>
-      </div>
+      <span className="text-muted">Visitors&nbsp;·&nbsp;</span>
+      <span className="text-accent tabular-nums">
+        {visitorCount !== null ? visitorCount.toLocaleString() : '—'}
+      </span>
     </div>
   )
 }

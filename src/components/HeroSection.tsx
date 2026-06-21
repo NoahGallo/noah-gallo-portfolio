@@ -1,19 +1,14 @@
 /**
- * HeroSection — top-of-page intro: profile photo, name, role, tech pills,
- * CTA buttons (download CV / view projects), and social links.
+ * HeroSection — asymmetric editorial intro: left column is the typography
+ * stack (role label, oversized name, operator summary, ghost CTAs, social
+ * links); right column is the portrait with a mono caption.
  *
- * Reveal animations use a simple transition pattern: each block starts at
- * `opacity-0 translate-y-6` and animates to `opacity-100 translate-y-0`
- * once `isVisible` is true. Stagger is applied via inline `transitionDelay`.
+ * Reveal: each block starts at `opacity-0 translate-y-6` and animates to
+ * `opacity-100 translate-y-0` once `isVisible` is true. Stagger via inline
+ * `transitionDelay`.
  */
 import { Github, Linkedin, Mail, Download } from 'lucide-react'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
-
-const TECH_STACK = [
-  'Azure', 'AWS', 'Google Cloud', 'Kubernetes', 'Terraform',
-  'Ansible', 'Azure DevOps', 'Jenkins', 'Docker', 'Python',
-  'CI/CD', 'Prometheus', 'Grafana', 'Linux',
-] as const
 
 const SOCIAL_LINKS = [
   { href: 'https://github.com/NoahGallo', icon: Github, label: 'GitHub', external: true },
@@ -37,7 +32,6 @@ export function HeroSection() {
     document.body.removeChild(link)
   }
 
-  // Shorthand for the scroll-reveal classes; consistent across the section.
   const revealCls = (extra = '') =>
     `transition-all duration-700 ease-out ${extra} ${
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
@@ -47,110 +41,100 @@ export function HeroSection() {
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20"
+      className="relative min-h-[calc(100vh-5rem)] flex items-center px-4 sm:px-6 lg:px-8 py-20"
     >
-      {/* Profile photo */}
-      <div
-        className={revealCls('w-40 h-40 rounded-full mb-8 overflow-hidden shadow-2xl ring-4 ring-blue-200 dark:ring-blue-800')}
-      >
-        <img
-          src="/images/noah-website-pic.jpg"
-          alt="Noah Gallo"
-          width={160}
-          height={160}
-          loading="eager"
-          fetchPriority="high"
-          className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-        />
-      </div>
-
-      {/* Main title */}
-      <h1
-        className={revealCls('text-5xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent')}
-        style={{ transitionDelay: '150ms' }}
-      >
-        Noah Gallo
-      </h1>
-
-      {/* Subtitle */}
-      <p
-        className={revealCls('text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-2xl')}
-        style={{ transitionDelay: '250ms' }}
-      >
-        Cloud & DevOps Engineer
-      </p>
-
-      {/* Description */}
-      <p
-        className={revealCls('text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-3xl leading-relaxed')}
-        style={{ transitionDelay: '350ms' }}
-      >
-        Certified DevOps & Cloud Engineer specializing in automating CI/CD pipelines and designing
-        scalable cloud infrastructures. Expert in Azure, AWS, GCP, Kubernetes, and Infrastructure
-        as Code with Terraform.
-      </p>
-
-      {/* Tech stack pills */}
-      <div
-        className={revealCls('flex flex-wrap justify-center gap-3 mb-8 max-w-4xl')}
-        style={{ transitionDelay: '450ms' }}
-      >
-        {TECH_STACK.map((tech) => (
-          <span
-            key={tech}
-            className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium hover:scale-105 hover:shadow-md transition-all duration-200 cursor-default"
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        {/* Left: text */}
+        <div className="lg:col-span-7">
+          <p
+            className={revealCls('font-mono text-xs uppercase tracking-[0.2em] text-accent mb-8')}
           >
-            {tech}
-          </span>
-        ))}
-      </div>
+            L3 Cloud · Platform Engineer
+          </p>
 
-      {/* Action buttons */}
-      <div
-        className={revealCls('flex flex-col sm:flex-row gap-4 mb-8')}
-        style={{ transitionDelay: '600ms' }}
-      >
-        <button
-          onClick={downloadCV}
-          className="focus-ring bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:scale-105 hover:shadow-xl group"
-        >
-          <Download size={20} className="group-hover:animate-bounce" />
-          Download CV
-        </button>
-        <button
-          onClick={scrollToProjects}
-          className="focus-ring border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:shadow-xl"
-        >
-          View Projects
-        </button>
-      </div>
-
-      {/* Social links */}
-      <div className={revealCls('flex gap-6')} style={{ transitionDelay: '750ms' }}>
-        {SOCIAL_LINKS.map(({ href, icon: Icon, label, external }) => (
-          <a
-            key={label}
-            href={href}
-            target={external ? '_blank' : undefined}
-            rel={external ? 'noopener noreferrer' : undefined}
-            className="focus-ring text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 hover:scale-125 hover:-translate-y-1 rounded-md"
-            aria-label={label}
+          <h1
+            className={revealCls(
+              'font-display font-light leading-[0.92] text-ink mb-10 text-6xl md:text-7xl lg:text-8xl',
+            )}
+            style={{ transitionDelay: '100ms' }}
           >
-            <Icon size={24} />
-          </a>
-        ))}
-      </div>
+            Noah
+            <br />
+            <span className="font-extrabold">Gallo</span>
+          </h1>
 
-      {/* Decorative floating blobs (hidden on mobile to keep things calm) */}
-      <div
-        className="absolute top-20 right-10 w-20 h-20 bg-blue-200/20 dark:bg-blue-800/20 rounded-full animate-float hidden lg:block pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-20 left-10 w-16 h-16 bg-purple-200/20 dark:bg-purple-800/20 rounded-full animate-float hidden lg:block pointer-events-none"
-        style={{ animationDelay: '2s' }}
-        aria-hidden="true"
-      />
+          <p
+            className={revealCls('text-lg md:text-xl text-muted leading-relaxed max-w-xl mb-10')}
+            style={{ transitionDelay: '200ms' }}
+          >
+            Embedded as an L3 engineer in CFL's Cloud Native Platform team — Devoteam consultant.
+            I built the railway's mobile-app platform (CFL GO) end to end on Azure/AKS, and operate
+            the Park &amp; Ride platform Luxembourg commuters use daily. Terraform IaC, GitOps with
+            ArgoCD, Kubernetes security, FinOps.
+          </p>
+
+          <div
+            className={revealCls('flex flex-col sm:flex-row gap-3 mb-12')}
+            style={{ transitionDelay: '350ms' }}
+          >
+            <button
+              onClick={downloadCV}
+              className="focus-ring border border-accent text-accent hover:bg-accent hover:text-canvas font-mono text-xs uppercase tracking-wider px-6 py-3 rounded-md transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <Download size={16} />
+              Download CV
+            </button>
+            <button
+              onClick={scrollToProjects}
+              className="focus-ring border border-edge text-ink hover:border-accent hover:text-accent font-mono text-xs uppercase tracking-wider px-6 py-3 rounded-md transition-colors duration-200"
+            >
+              View Work
+            </button>
+          </div>
+
+          <div
+            className={revealCls('flex flex-wrap gap-x-6 gap-y-3 font-mono text-xs uppercase tracking-wider')}
+            style={{ transitionDelay: '450ms' }}
+          >
+            {SOCIAL_LINKS.map(({ href, icon: Icon, label, external }) => (
+              <a
+                key={label}
+                href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                className="focus-ring text-muted hover:text-accent transition-colors flex items-center gap-2 rounded-sm"
+                aria-label={label}
+              >
+                <Icon size={14} />
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: portrait */}
+        <div
+          className={revealCls('lg:col-span-5')}
+          style={{ transitionDelay: '250ms' }}
+        >
+          <div className="relative max-w-sm mx-auto lg:ml-auto lg:mr-0">
+            <div className="aspect-[4/5] overflow-hidden border border-edge bg-surface-2">
+              <img
+                src="/images/noah-website-pic.jpg"
+                alt="Noah Gallo"
+                width={400}
+                height={500}
+                loading="eager"
+                fetchPriority="high"
+                className="w-full h-full object-cover transition-all duration-700"
+              />
+            </div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mt-4">
+              Mersch, LU&nbsp;·&nbsp;Open to Switzerland
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
